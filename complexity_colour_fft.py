@@ -59,7 +59,7 @@ def coarse_grain(img, depth):
     else:
         spec=0
 
-    blur_range=np.geomspace(256.0, 1.0,num=10)#[128,96,64,48,32,24,16,12,8,4,2]
+    blur_range=np.geomspace(256.0, 1.0,num=12)#[128,96,64,48,32,24,16,12,8,4,2]#
     for iloop in range(1, depth):
         # create circle mask
         r=blur_range[iloop]
@@ -155,7 +155,7 @@ def compute_complexities(img):
     '''
     #assert int(depth2) == int(depth1), "Sides must be equal"
     #print("depth="+str(depth1))
-    depth1=10
+    depth1=11
     stack = coarse_grain(img, depth1)  # Does the coarse-graining to depth = (maximal depth - 3)  -  I assume that the last three patterns are too coarse to bear any interesting information
     #blown_up_stack=stack
     '''
@@ -358,7 +358,7 @@ for im in image_list:
 		complexity_list_partial.append(partial)
 		local_max_list.append(1+local_max_n(partial))
 		local_min_list.append(1+local_min_n(partial))
-		#image_stats(cnt, rs, partial, x,subset_name, cg_type)
+		image_stats(cnt, rs, partial, x,subset_name, cg_type)
 	else:
 		rs = transform.resize(im, (512,512), anti_aliasing=False) 
 		im_channels=[im[:,:,0], im[:,:,1], im[:,:,2]]#FIXME there's a more elegant way to do this
@@ -392,7 +392,7 @@ for im in image_list:
 		complexity_list_partial.append(cmpl_partial)
 		local_max_list.append(1+local_max_n(cmpl_partial))
 		local_min_list.append(1+local_min_n(cmpl_partial))
-		#image_stats(cnt, im, cmpl_partial, cmpl, subset_name, cg_type)
+		image_stats(cnt, im, cmpl_partial, cmpl, subset_name, cg_type)
 	cnt=cnt+1	
 	#print(cnt)
 	if (cnt % 10) == 0:
@@ -406,7 +406,7 @@ if not os.path.exists('results'):
 
 
 df['ms_total']=complexity_list
-df['ms_total']=df['ms_total']*3
+df['ms_total']=df['ms_total']#*3
 
 if not os.path.exists('results/calculated_mssc'):
 	os.mkdir('results/calculated_mssc')
@@ -423,15 +423,23 @@ np_partial = np.zeros([len(a),feature_n])
 for i,j in enumerate(a):
     np_partial[i][0:len(j)] = j
 
-np_partial=np_partial*3
+np_partial=np_partial#*3
 
 features = [f"s{i}" for i in range(feature_n)]
+
 
 
 df[features]=np_partial
 msk=df['ms_total']>0.5 
 idx = df.index[msk]
 df=df.drop(idx)
+
+idx=[]
+if subset_name=='suprematism':
+	idx=[52,27]
+outliers=df.loc[idx]
+df=df.drop(idx)
+
 
 if not os.path.exists('results/mssc_figures'):
 	os.mkdir('results/mssc_figures')
@@ -456,10 +464,12 @@ df.to_csv('results/calculated_mssc/'+cg_type+'_'+subset_name+'_complexity.csv', 
 
 
 #removing outliers
+
+
+
 '''
-idx=[]
 if subset_name=='suprematism':
-	idx=[50, 95, 64, 65, 52, 53, 13, 48, 20]
+	idx=[52,27]
 elif subset_name=='advertisement':
 	msk=df['ms_total']>0.3 
 	idx = df.index[msk]
@@ -468,11 +478,9 @@ elif subset_name=='art':
 'elif subset_name=='infographics':
 	msk=df['ms_total']>0.5 
 	idx = df.index[msk]
-
-
-outliers=df.loc[idx]
-df=df.drop(idx)
 '''
+
+
 x=range(0,df['ms_total'].to_numpy().shape[0])
 y1=df['gt'].to_numpy()
 y2=df['ms_total'].to_numpy()
