@@ -59,7 +59,7 @@ def coarse_grain(img, depth):
     else:
         spec=0
 
-    blur_range=np.geomspace(256.0, 1.0,num=50)#[128,96,64,48,32,24,16,12,8,4,2]
+    blur_range=np.geomspace(256.0, 1.0,num=10)#[128,96,64,48,32,24,16,12,8,4,2]
     for iloop in range(1, depth):
         # create circle mask
         r=blur_range[iloop]
@@ -155,7 +155,7 @@ def compute_complexities(img):
     '''
     #assert int(depth2) == int(depth1), "Sides must be equal"
     #print("depth="+str(depth1))
-    depth1=49
+    depth1=10
     stack = coarse_grain(img, depth1)  # Does the coarse-graining to depth = (maximal depth - 3)  -  I assume that the last three patterns are too coarse to bear any interesting information
     #blown_up_stack=stack
     '''
@@ -339,6 +339,7 @@ complexity_list_partial=[]
 local_max_list=[]
 local_min_list=[]
 
+
 df = pd.ExcelFile(ranking_path).parse('Sheet1');
 mask=np.zeros(len(df))
 cnt=0
@@ -357,7 +358,7 @@ for im in image_list:
 		complexity_list_partial.append(partial)
 		local_max_list.append(1+local_max_n(partial))
 		local_min_list.append(1+local_min_n(partial))
-		image_stats(cnt, rs, partial, x,subset_name, cg_type)
+		#image_stats(cnt, rs, partial, x,subset_name, cg_type)
 	else:
 		rs = transform.resize(im, (512,512), anti_aliasing=False) 
 		im_channels=[im[:,:,0], im[:,:,1], im[:,:,2]]#FIXME there's a more elegant way to do this
@@ -391,7 +392,7 @@ for im in image_list:
 		complexity_list_partial.append(cmpl_partial)
 		local_max_list.append(1+local_max_n(cmpl_partial))
 		local_min_list.append(1+local_min_n(cmpl_partial))
-		image_stats(cnt, im, cmpl_partial, cmpl, subset_name, cg_type)
+		#image_stats(cnt, im, cmpl_partial, cmpl, subset_name, cg_type)
 	cnt=cnt+1	
 	#print(cnt)
 	if (cnt % 10) == 0:
@@ -400,17 +401,20 @@ for im in image_list:
 
 
 #complexity_list=complexity_list/np.max(complexity_list)
+if not os.path.exists('results'):
+	os.mkdir('results')
+
 
 df['ms_total']=complexity_list
 df['ms_total']=df['ms_total']*3
 
-if not os.path.exists('calculated_mssc'):
-	os.mkdir('calcilated_mssc')
+if not os.path.exists('results/calculated_mssc'):
+	os.mkdir('results/calculated_mssc')
 
-with open('calculated_mssc/'+cg_type+'_'+subset_name+'_complexity.pickle', 'wb') as handle:
+with open('results/calculated_mssc/'+cg_type+'_'+subset_name+'_complexity.pickle', 'wb') as handle:
     pickle.dump(df, handle)
 
-df.to_csv('calculated_mssc/'+cg_type+'_'+subset_name+'_complexity.csv', sep='\t')
+df.to_csv('results/calculated_mssc/'+cg_type+'_'+subset_name+'_complexity.csv', sep='\t')
 
 
 a=complexity_list_partial
@@ -429,25 +433,25 @@ msk=df['ms_total']>0.5
 idx = df.index[msk]
 df=df.drop(idx)
 
-if not os.path.exists('mssc_figures'):
-	os.mkdir('mssc_figures')
+if not os.path.exists('results/mssc_figures'):
+	os.mkdir('results/mssc_figures')
 
 
-if not os.path.exists('mssc_figures_eps'):
-	os.mkdir('mssc_figures_eps')
+if not os.path.exists('results/mssc_figures_eps'):
+	os.mkdir('results/mssc_figures_eps')
 
 
 avg_c=df[features].mean().to_numpy()
 plt.clf()
 plt.plot(range(len(avg_c)),avg_c, label='partial complexities averaged, '+subset_name)
-plt.savefig('mssc_figures/'+cg_type+'_'+subset_name+'_partial_cmpl_avg.png')
-plt.savefig('mssc_figures_eps/'+cg_type+'_'+subset_name+'_partial_cmpl_avg.eps', format='eps')
+plt.savefig('results/mssc_figures/'+cg_type+'_'+subset_name+'_partial_cmpl_avg.png')
+plt.savefig('results/mssc_figures_eps/'+cg_type+'_'+subset_name+'_partial_cmpl_avg.eps', format='eps')
 
 
-with open('calculated_mssc/'+cg_type+'_'+subset_name+'_complexity.pickle', 'wb') as handle:
+with open('results/calculated_mssc/'+cg_type+'_'+subset_name+'_complexity.pickle', 'wb') as handle:
     pickle.dump(df, handle)
 
-df.to_csv('calculated_mssc/'+cg_type+'_'+subset_name+'_complexity.csv', sep='\t')
+df.to_csv('results/calculated_mssc/'+cg_type+'_'+subset_name+'_complexity.csv', sep='\t')
 
 
 
@@ -480,37 +484,37 @@ y2o=outliers['ms_total'].to_numpy()
 #human vs calculated complexity
 plt.clf()
 plt.scatter(y1,y2,color='blue', linewidth=2, alpha=0.5)
-plt.scatter(y1o,y2o,color='red', linewidth=2, alpha=0.5)
+#plt.scatter(y1o,y2o,color='red', linewidth=2, alpha=0.5)
 #plt.ylim(0,0.2)
 plt.xlabel('human ranking',fontsize=16)
 plt.ylabel('multi-scale structural complexity',fontsize=16)
 plt.title(subset_name+', total complexity',fontsize=20)
 plt.legend(loc='lower right')
-plt.savefig('mssc_figures/'+cg_type+'_'+subset_name+'_complexity_total.png')
-plt.savefig('mssc_figures_eps/'+cg_type+'_'+subset_name+'_complexity_total.eps', format='eps')
+plt.savefig('results/mssc_figures/'+cg_type+'_'+subset_name+'_complexity_total.png')
+plt.savefig('results/mssc_figures_eps/'+cg_type+'_'+subset_name+'_complexity_total.eps', format='eps')
 
 
 
 #regression
 x=df['ms_total']
 y=df['gt']
-xo=outliers['ms_total']
-yo=outliers['gt']
+#xo=outliers['ms_total']
+#yo=outliers['gt']
 slope, intercept, r, p, std_err = stats.linregress(x, y)
 y1=slope * x + intercept
 plt.clf()
 plt.scatter(x, y)
 plt.xlabel('human ranking',fontsize=16)
 plt.ylabel('multi-scale structural complexity',fontsize=16)
-plt.scatter(xo,yo,color='red', linewidth=2, alpha=0.5)
+#plt.scatter(xo,yo,color='red', linewidth=2, alpha=0.5)
 plt.plot(x, y1, color='orange')
 plt.title(subset_name+', linear regression', fontsize=20)
 plt.title(cg_type+' cg, '+subset_name+' regression (full set).png')
-plt.savefig('mssc_figures/'+cg_type+'_'+subset_name+'_regression_total.png')
-plt.savefig('mssc_figures_eps/'+cg_type+'_'+subset_name+'_regression_total.eps', format='eps')
+plt.savefig('results/mssc_figures/'+cg_type+'_'+subset_name+'_regression_total.png')
+plt.savefig('results/mssc_figures_eps/'+cg_type+'_'+subset_name+'_regression_total.eps', format='eps')
 
 
-f = open("mssc_figures/"+cg_type+'_'+subset_name+'_regression_total.log', "w")
+f = open("results/mssc_figures/"+cg_type+'_'+subset_name+'_regression_total.log', "w")
 ttt=[slope, intercept, r, p, std_err]
 print("slope\tintercept\tr\tp\tstd_err", end='\n', file=f)
 print(*ttt, sep='\t', end='\n', file=f)
