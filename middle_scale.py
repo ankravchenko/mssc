@@ -4,6 +4,7 @@ import pandas as pd
 import pickle
 from scipy import stats
 import sys
+import os
 
 #read parameters
 subset_name='suprematism'
@@ -16,6 +17,15 @@ handle=open('results/calculated_mssc/'+cg_type+'_'+subset_name+'_complexity.pick
 df=pickle.load(handle)
 
 #remove outliers
+
+if subset_name=='suprematism':
+	idx=[50, 48, 20, 52]#[50, 95, 64, 65, 52, 53, 13, 48, 20]
+	outliers=df.loc[idx]
+	df=df.drop(idx)
+if subset_name=='advertisement':
+	idx=[199]#[50, 95, 64, 65, 52, 53, 13, 48, 20]
+	outliers=df.loc[idx]
+	df=df.drop(idx)
 
 '''
 idx=[]
@@ -57,10 +67,10 @@ y2o=outliers['ms_total'].to_numpy()
 #regression for each separate scale: loop
 reg_results=[]
 y=df['gt']
-features = [f"s{i}" for i in range(10)]
+features = [f"s{i}" for i in range(19)]
 
-
-for i in range(10):
+max_r=0
+for i in range(14):
 	#regression
 	x=df[features[i]]
 	#xo=outliers['ms_total']
@@ -68,20 +78,35 @@ for i in range(10):
 	if x.any():
 		slope, intercept, r, p, std_err = stats.linregress(x, y)
 		reg_results.append([r,p])
+		if (r>max_r):
+			max_r=r
 	else:
 		reg_results.append([0,0])
+print("max r: ", str(max_r))
 
 df_stats = pd.DataFrame(reg_results, columns=['r', 'p'])
+
+
+if not os.path.exists('results/calculated_mssc/'):
+	os.mkdir('results/calculated_mssc/')
+if not os.path.exists('results/calculated_mssc_eps/'):
+	os.mkdir('results/calculated_mssc_eps/')
 
 df_stats.to_csv('results/calculated_mssc/'+cg_type+'_'+subset_name+'_complexity_regression.csv', sep='\t')
 print(subset_name+', full: r=', str(r)+', p='+str(p))
 
-df['frac']=df['s2']+df['s3']+df['s4']+df['s5']+df['s6']
-#outliers['frac']=outliers['s2']+outliers['s3']+outliers['s4']+outliers['s5']+outliers['s6']
+
+fr1=1
+fr2=10
+ttt=df['s'+str(fr2)]
+for i in range(fr1,fr2):
+	ttt=ttt+df['s'+str(i)]
+df['frac']=ttt
 x=df['frac']
 slope, intercept, r, p, std_err = stats.linregress(x, y)
-print(subset_name+', 2-6: r=', str(r)+', p='+str(p))
-freqrange='2-6'
+freqrange=str(fr1)+'-'+str(fr2)
+print(subset_name+', '+freqrange+': r=', str(r)+', p='+str(p))
+
 
 
 #regression
@@ -97,13 +122,19 @@ plt.ylabel('subjective complexity',fontsize=16)
 plt.xlabel('MSSC',fontsize=16)
 #plt.scatter(xo,yo,color='red', linewidth=2, alpha=0.5)
 plt.plot(x, y1, color='orange')
-plt.xlim([-0.01, 0.12])
+plt.xlim([-0.01, 0.16])
 plt.title(subset_name, fontsize=16)
 plt.savefig('results/mssc_figures/'+cg_type+'_'+subset_name+'_regression_'+freqrange+'.png')
 plt.savefig('results/mssc_figures_eps/'+cg_type+'_'+subset_name+'_regression_'+freqrange+'.eps', format='eps')
 
 df_part=df[['gt','frac']]
 df_part.to_csv('results/calculated_mssc/'+cg_type+'_'+subset_name+'_complexity_mid.csv', sep='\t')
+
+f = open("results/mssc_figures/"+cg_type+'_'+subset_name+'_regression_'+freqrange+'.log', "w")
+ttt=[slope, intercept, r, p, std_err]
+print("slope\tintercept\tr\tp\tstd_err", end='\n', file=f)
+print(*ttt, sep='\t', end='\n', file=f)
+f.close()
 
 
 #regression full
@@ -115,7 +146,7 @@ slope, intercept, r, p, std_err = stats.linregress(x, y)
 y1=slope * x + intercept
 plt.clf()
 plt.scatter(x, y)
-plt.ylabel('subjective_complexity',fontsize=16)
+plt.ylabel('subjective complexity',fontsize=16)
 plt.xlabel('MSSC',fontsize=18)
 #plt.scatter(xo,yo,color='red', linewidth=2, alpha=0.5)
 plt.plot(x, y1, color='orange')

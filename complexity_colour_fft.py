@@ -59,7 +59,7 @@ def coarse_grain(img, depth):
     else:
         spec=0
 
-    blur_range=np.geomspace(256.0, 1.0,num=12)#[128,96,64,48,32,24,16,12,8,4,2]#
+    blur_range=np.geomspace(256.0, 1.0,num=15)#[128,96,64,48,32,24,16,12,8,4,2]#
     for iloop in range(1, depth):
         # create circle mask
         r=blur_range[iloop]
@@ -155,7 +155,7 @@ def compute_complexities(img):
     '''
     #assert int(depth2) == int(depth1), "Sides must be equal"
     #print("depth="+str(depth1))
-    depth1=11
+    depth1=15
     stack = coarse_grain(img, depth1)  # Does the coarse-graining to depth = (maximal depth - 3)  -  I assume that the last three patterns are too coarse to bear any interesting information
     #blown_up_stack=stack
     '''
@@ -210,7 +210,7 @@ def debug_cg(im):
 	rs=rs/np.sqrt(norm)
 
 	print('start coarse grain')
-	stack = coarse_grain(rs, 11)	
+	stack = coarse_grain(rs, 15)	
 	print('coarse grain finished')
 	print(len(stack))
 	i=0
@@ -297,13 +297,20 @@ def image_stats(im_n, im, partial_complexity, cmpl, subset_name, cg_type):
 	plt.savefig('image_debug/'+subset_name+'/'+str(im_n)+"_"+cg_type+"_debug.png")
 	plt.close(fig)
 
-subset_name='suprematism'
-dataset_path="/vol/tcm36/akravchenko/image_complexity/Savoias-Dataset/Images/Suprematism/"
-ranking_path="/vol/tcm36/akravchenko/image_complexity/Savoias-Dataset/Images/global_ranking/global_ranking_sup.xlsx"
+subset_name='infographics'
+dataset_path="../Savoias-Dataset/Images/Visualizations/"
+ranking_path="../Savoias-Dataset/Images/global_ranking/global_ranking_vis.xlsx"
 cg_type='fft'
 
 '''
+subset_name='art'
+dataset_path="../Savoias-Dataset/Images/Art/"
+ranking_path="../Savoias-Dataset/Images/global_ranking/global_ranking_art.xlsx"
+cg_type='fft'
+
+
 python3 complexity_colour_fft.py advertisement "../Savoias-Dataset/Images/Advertisement/" "../Savoias-Dataset/Images/global_ranking/global_ranking_ad.xlsx" fft
+python3 complexity_colour_fft.py infographics "../Savoias-Dataset/Images/Visualizations/" "../Savoias-Dataset/Images/global_ranking/global_ranking_vis.xlsx" fft
 
 '''
 try:
@@ -312,9 +319,10 @@ try:
 	dataset_path=sys.argv[2]
 	ranking_path=sys.argv[3]
 except: 
-	print("computing MSSC for suprematism dataset by default. for a different dataset please run this script with appropriate parameters: complexity_colour_fft.py subset_name dataset_path human_ranking_path\n")
+	print("computing MSSC for infographics dataset by default. for a different dataset please run this script with appropriate parameters: complexity_colour_fft.py subset_name dataset_path human_ranking_path\n")
 #cg_type=sys.argv[4]
 
+print("read arguments")
 ############load sorted files##########################
 
 image_list_jpg=[]
@@ -329,10 +337,13 @@ for fname in list_dir:
 	image_list_jpg.append(img)
 #############
 
+print("loaded images")
 image_list=[]
 for im in image_list_jpg:
+	#rs = transform.resize(np.array(im), (512,512), anti_aliasing=False)
 	image_list.append(np.array(im))#(ImageOps.grayscale(im)))
 
+print("converted images to numpy")
 #all 3 colours
 complexity_list=[]
 complexity_list_partial=[]
@@ -341,8 +352,10 @@ local_min_list=[]
 
 
 df = pd.ExcelFile(ranking_path).parse('Sheet1');
+print("parsed human ranking")
 mask=np.zeros(len(df))
 cnt=0
+print("computing mssc")
 for im in image_list: 
 	if len(im.shape) == 2:#for greyscale images
 		rs = transform.resize(im, (512,512), anti_aliasing=False) 
@@ -371,8 +384,8 @@ for im in image_list:
 			coeff=np.sum(norm)/(norm.shape[0]*norm.shape[1]) 
 			im_intensity[j]=coeff
 
-			rs = im_c#transform.resize(im_c, (512,512), anti_aliasing=False) 
-			rs=im_c.astype(np.float64)
+			rs = transform.resize(im_c, (512,512), anti_aliasing=False) 
+			rs=rs.astype(np.float64)
 			norm=np.einsum('ij,ij', rs, rs)
 			rs=rs/np.sqrt(norm)
 			#intensity of image/square root of norm
@@ -385,7 +398,6 @@ for im in image_list:
 			complexity_channels_partial.append(partial)
 
 		cmpl=(im_intensity[0]*complexity_channels[0] + im_intensity[1]*complexity_channels[1] + im_intensity[2]*complexity_channels[2])/3
-		cmpl=cmpl
 		cmpl_partial=(im_intensity[0]*np.asarray(complexity_channels_partial[0]) + im_intensity[1]*np.asarray(complexity_channels_partial[1]) + im_intensity[2]*np.asarray(complexity_channels_partial[2]))/3
 		cmpl_partial=cmpl_partial
 		complexity_list.append(cmpl)
@@ -406,7 +418,7 @@ if not os.path.exists('results'):
 
 
 df['ms_total']=complexity_list
-df['ms_total']=df['ms_total']#*3
+df['ms_total']=df['ms_total']*3
 
 if not os.path.exists('results/calculated_mssc'):
 	os.mkdir('results/calculated_mssc')
@@ -423,7 +435,7 @@ np_partial = np.zeros([len(a),feature_n])
 for i,j in enumerate(a):
     np_partial[i][0:len(j)] = j
 
-np_partial=np_partial#*3
+np_partial=np_partial*3
 
 features = [f"s{i}" for i in range(feature_n)]
 
@@ -433,14 +445,14 @@ df[features]=np_partial
 msk=df['ms_total']>0.5 
 idx = df.index[msk]
 df=df.drop(idx)
-
+'''
 idx=[]
 if subset_name=='suprematism':
 	idx=[52,27]
 outliers=df.loc[idx]
 df=df.drop(idx)
 
-
+'''
 if not os.path.exists('results/mssc_figures'):
 	os.mkdir('results/mssc_figures')
 
