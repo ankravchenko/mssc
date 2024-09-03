@@ -22,7 +22,7 @@ complexity_colour_fft.sh
 
 middle_scale.sh 
 
-plot_scale_impact.sh 
+plot_scale_impact.sh (currently undergoing some refactoring and may not work)
 
 Questions can be addressed to anna.kravchenko@ru.nl
 
