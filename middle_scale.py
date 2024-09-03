@@ -22,10 +22,12 @@ if subset_name=='suprematism':
 	idx=[50, 48, 20, 52]#[50, 95, 64, 65, 52, 53, 13, 48, 20]
 	outliers=df.loc[idx]
 	df=df.drop(idx)
+
 if subset_name=='advertisement':
 	idx=[199]#[50, 95, 64, 65, 52, 53, 13, 48, 20]
 	outliers=df.loc[idx]
 	df=df.drop(idx)
+
 
 '''
 idx=[]
@@ -96,8 +98,8 @@ df_stats.to_csv('results/calculated_mssc/'+cg_type+'_'+subset_name+'_complexity_
 print(subset_name+', full: r=', str(r)+', p='+str(p))
 
 
-fr1=1
-fr2=10
+fr1=2
+fr2=8
 ttt=df['s'+str(fr2)]
 for i in range(fr1,fr2):
 	ttt=ttt+df['s'+str(i)]
@@ -122,7 +124,7 @@ plt.ylabel('subjective complexity',fontsize=16)
 plt.xlabel('MSSC',fontsize=16)
 #plt.scatter(xo,yo,color='red', linewidth=2, alpha=0.5)
 plt.plot(x, y1, color='orange')
-plt.xlim([-0.01, 0.16])
+plt.xlim([-0.01, 0.175])
 plt.title(subset_name, fontsize=16)
 plt.savefig('results/mssc_figures/'+cg_type+'_'+subset_name+'_regression_'+freqrange+'.png')
 plt.savefig('results/mssc_figures_eps/'+cg_type+'_'+subset_name+'_regression_'+freqrange+'.eps', format='eps')
