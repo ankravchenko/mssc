@@ -22,8 +22,6 @@ complexity_colour_fft.sh
 
 middle_scale.sh 
 
-scale_search.sh 
-
 plot_scale_impact.sh 
 
 Questions can be addressed to anna.kravchenko@ru.nl
