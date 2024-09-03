@@ -2,4 +2,4 @@ python3 plot_partial_complexities.py natural
 python3 plot_partial_complexities.py artificial
 python3 plot_scale_impact.py natural
 python3 plot_scale_impact.py artificial
-python3 combine_images_scale.py
+python3 combine_images.py

@@ -17,7 +17,7 @@ colours_natural=['orange', '#4169e1', '#20b2aa']
 colours_artificial=[	'#00bfff', "#701fb8", '#2f4f4f', '#ec5b0d']
 
 #pickle load
-features = [f"s{i}" for i in range(10)]
+features = [f"s{i}" for i in range(14)]
 
 
 if nat == 'natural':
@@ -29,8 +29,15 @@ else:
 
 plt.clf()
 plt.vlines(1, 0, 0.1, colors='gray', linestyles='dashed')
-plt.vlines(7, 0, 0.1, colors='gray', linestyles='dashed')
+plt.vlines(8, 0, 0.1, colors='gray', linestyles='dashed')
 #pickle load
+
+blur_r=np.geomspace(256.0, 1.0,num=11)
+ticks_r=[0,2,4,6,8,10]
+labels_r=[]
+for r in ticks_r:
+    a=blur_r[r]  
+    labels_r.append(f'{a:.1f}')
 
 cnt=0
 for subset_name in dset:
@@ -41,8 +48,8 @@ for subset_name in dset:
 	y=y_all.mean(0)
 	x=range(y.size)
 	plt.ylim(0,0.06)
-	plt.plot(x, y, color=colours[cnt], label=subset_name)
-	plt.xticks(ticks=[0,2,4,6,8],labels=[256, '75', '22', '6.5', '1.8' ]) #[256,128,96,64,48,32,24,16,12,8,4,2]. geomspace: array([256.        , 138.24764658,  74.65785853,  40.3174736 ,21.77264   ,  11.75787594,   6.34960421,   3.42897593, 1.85174942,   1.        ]) rotation=45, 
+	plt.plot(x[0:10], y[0:10], color=colours[cnt], label=subset_name)
+	plt.xticks(ticks=ticks_r, labels=labels_r)#ticks=[0,2,4,6,8,10],labels=[256, '75', '22', '6.5', '1.8' ]) #[256,128,96,64,48,32,24,16,12,8,4,2]. geomspace: array([256.        , 138.24764658,  74.65785853,  40.3174736 ,21.77264   ,  11.75787594,   6.34960421,   3.42897593, 1.85174942,   1.        ]) rotation=45, 
 	plt.xlabel('low pass filter radius',fontsize=label_fontsize)
 	plt.ylabel('partial complexity',fontsize=label_fontsize)
 	plt.legend(loc='upper right', prop = { "size": label_fontsize-1 })
@@ -50,6 +57,6 @@ for subset_name in dset:
 
 
 #plt.title('correlation to human ranking by spatial scale', fontsize=label_fontsize+2)
-plt.savefig('results/'+nat+'_scale_complexity_10.png', bbox_inches='tight')
+plt.savefig('results/'+nat+'_scale_complexity.png', bbox_inches='tight')
 	
 

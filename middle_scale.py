@@ -71,10 +71,10 @@ y2o=outliers['ms_total'].to_numpy()
 #regression for each separate scale: loop
 reg_results=[]
 y=df['gt']
-features = [f"s{i}" for i in range(19)]
+features = [f"s{i}" for i in range(10)]
 
 max_r=0
-for i in range(14):
+for i in range(10):
 	#regression
 	x=df[features[i]]
 	#xo=outliers['ms_total']
@@ -86,22 +86,22 @@ for i in range(14):
 			max_r=r
 	else:
 		reg_results.append([0,0])
-print("max r: ", str(max_r))
+print("max correlation at a single scale: ", str(max_r))
 
 df_stats = pd.DataFrame(reg_results, columns=['r', 'p'])
 
 
-if not os.path.exists('results/calculated_mssc/'):
-	os.mkdir('results/calculated_mssc/')
-if not os.path.exists('results/calculated_mssc_eps/'):
-	os.mkdir('results/calculated_mssc_eps/')
+if not os.path.exists('results/mssc_figures/'):
+	os.mkdir('results/mssc_figures/')
+if not os.path.exists('results/mssc_figures_eps/'):
+	os.mkdir('results/mssc_figures_eps/')
 
 df_stats.to_csv('results/calculated_mssc/'+cg_type+'_'+subset_name+'_complexity_regression.csv', sep='\t')
 print(subset_name+', full: r=', str(r)+', p='+str(p))
 
 
 fr1=2
-fr2=7
+fr2=6
 ttt=df['s'+str(fr2)]
 for i in range(fr1,fr2):
 	ttt=ttt+df['s'+str(i)]
@@ -154,7 +154,7 @@ plt.ylabel('subjective complexity',fontsize=16)
 plt.xlabel('MSSC',fontsize=18)
 #plt.scatter(xo,yo,color='red', linewidth=2, alpha=0.5)
 plt.plot(x, y1, color='orange')
-plt.xlim([0, 0.35])
+plt.xlim([0, 0.4])
 plt.title(subset_name, fontsize=16)
 plt.savefig('results/mssc_figures/'+cg_type+'_'+subset_name+'_regression.png')
 plt.savefig('results/mssc_figures_eps/'+cg_type+'_'+subset_name+'_regression.eps', format='eps')

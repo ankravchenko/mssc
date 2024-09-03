@@ -23,35 +23,32 @@ def combine_images(columns, space, images, name):
             x = 0
     background.save(name)
 
-
-#combine_images(columns=2, space=20, images=['/vol/tcm11/kravchenko/correct_rdms_1000_weighted/kagome_corr.png', '/vol/tcm11/kravchenko/correct_rdms_1000_weighted/triangle_corr.png', '/vol/tcm11/kravchenko/correct_rdms_1000_weighted/kagome_corr_weighted.png', '/vol/tcm11/kravchenko/correct_rdms_1000_weighted/triangle_corr_weighted.png', '/vol/tcm11/kravchenko/triangle_vs_kagome.png', '/vol/tcm11/kravchenko/triangle_vs_kagome_weighted.png'])
-
 dset=['advertisement', 'art', 'infographics', 'interior_design', 'objects', 'scenes', 'suprematism']
 dset_natural=['interior_design', 'objects', 'scenes']
 dset_artificial=['advertisement', 'art', 'infographics', 'suprematism']
 
 images_natural=[]
 for t in dset_natural:
-	#i1="mssc_figures/fft_"+t+"_regression.png"
+	#i1="results/mssc_figures/fft_"+t+"_regression.png"
 	#images_natural.append(i1)
-	i2="mssc_figures/fft_"+t+"_regression_2-6.png"
+	i2="results/mssc_figures/fft_"+t+"_regression_2-7.png"
 	images_natural.append(i2)
 
 images_artificial=[]
 for t in dset_artificial:
-	#i1="mssc_figures/fft_"+t+"_regression.png"
+	#i1="results/mssc_figures/fft_"+t+"_regression.png"
 	#images_artificial.append(i1)
-	i2="mssc_figures/fft_"+t+"_regression_2-6.png"
+	i2="results/mssc_figures/fft_"+t+"_regression_2-7.png"
 	images_artificial.append(i2)
 
-combine_images(columns=2, space=20, images=images_natural, name='mssc_figures/all_natural_sets_regression.png')
-combine_images(columns=2, space=20, images=images_artificial, name='mssc_figures/all_artificial_sets_regression.png')
+combine_images(columns=2, space=20, images=images_natural, name='results/mssc_figures/all_natural_sets_regression.png')
+combine_images(columns=2, space=20, images=images_artificial, name='results/mssc_figures/all_artificial_sets_regression.png')
 
 
-images_all=['natural_scale_complexity_10.png', 'artificial_scale_complexity_10.png', 'natural_scale_impact_10.png', 'artificial_scale_impact_10.png',]
+images_all=['results/natural_scale_complexity.png', 'results/artificial_scale_complexity.png', 'results/natural_scale_impact.png', 'results/artificial_scale_impact.png',]
 
-#combine_images(columns=2, space=20, images=images_all, name='scale_impact_all.png')
+#combine_images(columns=2, space=20, images=images_all, name='results/scale_impact_all.png')
 
-combine_images(columns=2, space=20, images=images_all, name='cg_detail.png')
+combine_images(columns=2, space=20, images=images_all, name='results/cg_detail.png')
 
 
