@@ -19,15 +19,17 @@ df=pickle.load(handle)
 #remove outliers
 
 if subset_name=='suprematism':
-	idx=[50, 48, 20, 52]#[50, 95, 64, 65, 52, 53, 13, 48, 20]
-	outliers=df.loc[idx]
+	idx=[50]#artifacts from poor scanning quality comparable to meaningful features
 	df=df.drop(idx)
 
-if subset_name=='advertisement':
-	idx=[199]#[50, 95, 64, 65, 52, 53, 13, 48, 20]
-	outliers=df.loc[idx]
+if subset_name=='advertisement': 
+	idx=[199]#mcdonalds logo was ranked as 0 by humans while being technically somewhat complex
 	df=df.drop(idx)
 
+'''if subset_name=='infographics':
+	idx=[115, 99, 25, 117, 44, 68, 177, 140, 35]#these only have text. removing them improves performance but doesn't alter distribution shape
+	outliers=df.loc[idx]
+	df=df.drop(idx)'''
 
 '''
 idx=[]
@@ -99,7 +101,7 @@ print(subset_name+', full: r=', str(r)+', p='+str(p))
 
 
 fr1=2
-fr2=8
+fr2=7
 ttt=df['s'+str(fr2)]
 for i in range(fr1,fr2):
 	ttt=ttt+df['s'+str(i)]

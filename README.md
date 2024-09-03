@@ -1,21 +1,26 @@
-Computes multi-scale structural complexity of images in a dataset using a variety of coarse graining methods.
+Computes multi-scale structural complexity of images in a dataset using coarse graining implementation based on Fourier Transform.
 
-Currently implemented:
+The main experiment script (complexity_colour_fft.py) takes three input parameters: 
+- path to the folder contianing images, 
+- path to a file with human complexity rankings
+- coarse graining type (currently only 'fft' can be used)
 
-    Fourier Transform
-    Gaussian blur
-    Rank filter (median)
-    Wavelet transform, python 2d wavelets (py_cwt2d)
+Example:
+python complexity_colour_fft.py scenes dataset_folder ranking_file.xlsx fft 
 
-The main experiment script (complexity_colour_fft.py) uses coarse graining implementation based on Fourier Transform, taking two input parameters: path to the folder contianing images, path to a file with human complexity rankings It can be started with: python complexity_colour_fft.py scenes "dataset_folder" "ranking_file.xlsx" fft A *.csv file with resulting MSSC rankings is stored in the "calculated_mssc_100/" folder. Scatter plots and regression analysis are stored in the "mssc_figures_100/" folder.
+A *.csv file with resulting MSSC rankings will be stored in the results/calculated_mssc/" folder. Scatter plots and regression analysis will be stored in the results/mssc_figures/ folder.
 
-complexity_colour_fft.sh can be used for batch computing MSSC for the entirety of SAVOIAS dataset, by default the dataset is implied to be stored in the ../Savoias-Dataset folder.
+middle_scale.py dataset_name calculates correlation with subjective rankings and plots regression graphs
 
-Scripts scale_search.py and plot_scale_impact.py can be used for plotting the impact of scales on the overall complexity rankings and correlation of each scale ranking with human predictions for a given subset of SAVOIAS. scale_search.sh and plot_scale_impact.sh plot these for all subsets in SAVOIAS set.
+Scripts scale_search.py and plot_scale_impact.py can be used for plotting the impact of scales on the overall complexity rankings and correlation of each scale ranking with human predictions for a given subset of SAVOIAS. 
 
 Conda environment config containing all required packages is stored in mssc.yml
 
-Scripts complexity_rank_colour.py, complexity_colour_blur.py and complexity_colour_wavelets.py can be used for alternative methods of coarse graining.
+To reproduce our experiment and calculate MSSC and correlations for the entirety of SAVOIAS dataset (by default it's implied to be stored in the ../Savoias-Dataset folder) run:
+complexity_colour_fft.sh 
+middle_scale.sh 
+scale_search.sh 
+plot_scale_impact.sh 
 
 Questions can be addressed to anna.kravchenko@ru.nl
 
