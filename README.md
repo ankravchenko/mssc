@@ -8,9 +8,9 @@ The main experiment script (complexity_colour_fft.py) takes three input paramete
 Example:
 python complexity_colour_fft.py scenes dataset_folder ranking_file.xlsx fft 
 
-A *.csv file with resulting MSSC rankings will be stored in the results/calculated_mssc/" folder. Scatter plots and regression analysis will be stored in the results/mssc_figures/ folder.
+A *.csv file with resulting MSSC partial complexities will be stored in the results/calculated_mssc/" folder. Scatter plots and regression analysis will be stored in the results/mssc_figures/ folder. Intermediate results will be stored in the "image_detail/" folder.
 
-middle_scale.py dataset_name calculates correlation with subjective rankings and plots regression graphs
+middle_scale.py dataset_name calculates MSSC using the middle scales (these have shown to have the highest correlation with human participants. the "frac" column is the one currently used in our experiment), selects the middle correlation with subjective rankings and plots regression graphs
 
 Scripts scale_search.py and plot_scale_impact.py can be used for plotting the impact of scales on the overall complexity rankings and correlation of each scale ranking with human predictions for a given subset of SAVOIAS. 
 
@@ -22,9 +22,6 @@ complexity_colour_fft.sh
 
 middle_scale.sh 
 
-plot_scale_impact.sh (currently undergoing some refactoring and may not work)
+plot_scale_impact.sh 
 
-Questions can be addressed to anna.kravchenko@ru.nl
-
-Please reference: Kravchenko, A., Bagrov, A. A., Katsnelson, M. I., & Dudarev, V. (2024). Multi-scale structural complexity as a quantitative measure of visual complexity. arXiv preprint arXiv:2408.04076.
 

@@ -22,10 +22,11 @@ if subset_name=='suprematism':
 	idx=[50]#artifacts from poor scanning quality comparable to meaningful features
 	df=df.drop(idx)
 
+'''
 if subset_name=='advertisement': 
 	idx=[199]#mcdonalds logo was ranked as 0 by humans while being technically somewhat complex
 	df=df.drop(idx)
-
+'''
 '''if subset_name=='infographics':
 	idx=[115, 99, 25, 117, 44, 68, 177, 140, 35]#these only have text. removing them improves performance but doesn't alter distribution shape
 	outliers=df.loc[idx]
@@ -40,7 +41,8 @@ elif subset_name=='advertisement':
 	#msk=df['ms_total']>0.3 
 	idx = [85, 86]#df.index[msk] 109
 elif subset_name=='art':
-	idx=[30, 88, 107, 119, 225, 286, 380, 200]
+	idx=[30, 88, 107, 119, 225, 380, 200]
+	[88,107,225,380]
 	#idx=[119,107,88,30,200, 225,380, 328, 286, 216, 316, 332, 86, 108, 73, 23, 285,31]
 	#idx=[328, 80, 86, 225, 286, 352, 380, 119] for tasteless images
 	#idx=[380, 225, 30, 88, 119, 286, 107] for broad lines
@@ -71,7 +73,7 @@ y2o=outliers['ms_total'].to_numpy()
 #regression for each separate scale: loop
 reg_results=[]
 y=df['gt']
-features = [f"s{i}" for i in range(10)]
+features = [f"s{i}" for i in range(13)]
 
 max_r=0
 for i in range(10):
@@ -101,7 +103,7 @@ print(subset_name+', full: r=', str(r)+', p='+str(p))
 
 
 fr1=2
-fr2=6
+fr2=7
 ttt=df['s'+str(fr2)]
 for i in range(fr1,fr2):
 	ttt=ttt+df['s'+str(i)]
@@ -111,6 +113,8 @@ slope, intercept, r, p, std_err = stats.linregress(x, y)
 freqrange=str(fr1)+'-'+str(fr2)
 print(subset_name+', '+freqrange+': r=', str(r)+', p='+str(p))
 
+frac_std=np.std(ttt)
+y1=slope * x + intercept
 
 
 #regression

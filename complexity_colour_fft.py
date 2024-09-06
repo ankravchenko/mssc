@@ -290,11 +290,11 @@ def image_stats(im_n, im, partial_complexity, cmpl, subset_name, cg_type):
 	axs[4, 1].imshow(stack[8], cmap=plt.get_cmap('gray'), vmin=0, vmax=np.amax(rs))
 	axs[5, 0].imshow(stack[9], cmap=plt.get_cmap('gray'), vmin=0, vmax=np.amax(rs))
 	axs[5, 1].imshow(stack[10], cmap=plt.get_cmap('gray'), vmin=0, vmax=np.amax(rs))
-	if not os.path.exists('image_debug'):
-		os.mkdir('image_debug')
-	if not os.path.exists('image_debug/'+subset_name):
-		os.mkdir('image_debug/'+subset_name)
-	plt.savefig('image_debug/'+subset_name+'/'+str(im_n)+"_"+cg_type+"_debug.png")
+	if not os.path.exists('image_detail'):
+		os.mkdir('image_detail')
+	if not os.path.exists('image_detail/'+subset_name):
+		os.mkdir('image_detail/'+subset_name)
+	plt.savefig('image_detail/'+subset_name+'/'+str(im_n)+"_"+cg_type+"_debug.png")
 	plt.close(fig)
 
 subset_name='infographics'
