@@ -10,7 +10,7 @@ python complexity_colour_fft.py scenes dataset_folder ranking_file.xlsx fft
 
 A *.csv file with resulting MSSC partial complexities will be stored in the results/calculated_mssc/" folder. Scatter plots and regression analysis will be stored in the results/mssc_figures/ folder. Intermediate results will be stored in the "image_detail/" folder.
 
-middle_scale.py dataset_name calculates MSSC using the middle scales (these have shown to have the highest correlation with human participants. the "frac" column is the one currently used in our experiment), selects the middle correlation with subjective rankings and plots regression graphs
+middle_scale.py dataset_name calculates MSSC using the middle scales (these have shown to have the highest correlation with human participants, storing the results in fft_datasetname_complexity_mid.csv (the "frac" column is the one currently used in our experiment), and then calculates correlation with subjective rankings and plots regression graphs
 
 Scripts scale_search.py and plot_scale_impact.py can be used for plotting the impact of scales on the overall complexity rankings and correlation of each scale ranking with human predictions for a given subset of SAVOIAS. 
 
