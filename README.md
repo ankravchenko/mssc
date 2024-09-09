@@ -8,7 +8,7 @@ The main experiment script (complexity_colour_fft.py) takes three input paramete
 Example:
 python complexity_colour_fft.py scenes dataset_folder ranking_file.xlsx fft 
 
-A *.csv file with resulting partial complexities will be stored in the results/calculated_mssc/" folder. Scatter plots and regression analysis will be stored in the results/mssc_figures/ folder. The poarse graining process visualisations will be stored in the "image_detail/" folder.
+A *.csv file with resulting partial complexities will be stored in the results/calculated_mssc/" folder. Scatter plots and regression analysis will be stored in the results/mssc_figures/ folder. The coarse graining process visualisations will be stored in the "image_detail/" folder.
 This file doesn't yet contain the correct MSSC values, only intermediate results.
 
 middle_scale.py dataset_name calculates MSSC cutting off high and low spatial frequencies (middle scales of the image have been shown to have the highest correlation with human participants), storing the results in results/fft_datasetname_mssc.csv.
