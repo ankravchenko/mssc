@@ -21,9 +21,13 @@ Conda environment config containing all required packages is stored in mssc.yml
 
 To reproduce our experiment and calculate MSSC and correlations for the entirety of SAVOIAS dataset (by default it's implied to be stored in the ../Savoias-Dataset folder) run:
 
-mv "../Savoias-Dataset/Images/Art/global_ranking/" "../Savoias-Dataset/"\\
-complexity_colour_fft.sh\\
-middle_scale.sh \\
-plot_scale_impact.sh \\
+mv "../Savoias-Dataset/Images/Art/global_ranking/" "../Savoias-Dataset/"
+
+complexity_colour_fft.sh
+
+middle_scale.sh 
+
+plot_scale_impact.sh 
+
 
 
