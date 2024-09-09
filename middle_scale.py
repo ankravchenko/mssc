@@ -136,7 +136,13 @@ plt.savefig('results/mssc_figures/'+cg_type+'_'+subset_name+'_regression_'+freqr
 plt.savefig('results/mssc_figures_eps/'+cg_type+'_'+subset_name+'_regression_'+freqrange+'.eps', format='eps')
 
 df_part=df[['gt','frac']]
-df_part.to_csv('results/calculated_mssc/'+cg_type+'_'+subset_name+'_complexity_mid.csv', sep='\t')
+df_part=df_part.rename({'frac': 'MSSC'}, axis='columns')
+
+df_part.to_csv('results/calculated_mssc/'+cg_type+'_'+subset_name+'_mssc.csv', sep='\t')
+
+
+
+
 
 f = open("results/mssc_figures/"+cg_type+'_'+subset_name+'_regression_'+freqrange+'.log', "w")
 ttt=[slope, intercept, r, p, std_err]
