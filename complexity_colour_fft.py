@@ -59,7 +59,7 @@ def coarse_grain(img, depth):
     else:
         spec=0
 
-    blur_range=np.geomspace(256.0, 1.0,num=11)#[128,96,64,48,32,24,16,12,8,4,2]#
+    blur_range=np.geomspace(256.0, 1.0,num=15)#[128,96,64,48,32,24,16,12,8,4,2]#
     for iloop in range(1, depth):
         # create circle mask
         r=blur_range[iloop]
@@ -155,7 +155,7 @@ def compute_complexities(img):
     '''
     #assert int(depth2) == int(depth1), "Sides must be equal"
     #print("depth="+str(depth1))
-    depth1=11
+    depth1=15
     stack = coarse_grain(img, depth1)  # Does the coarse-graining to depth = (maximal depth - 3)  -  I assume that the last three patterns are too coarse to bear any interesting information
     #blown_up_stack=stack
     '''
@@ -210,7 +210,7 @@ def debug_cg(im):
 	rs=rs/np.sqrt(norm)
 
 	print('start coarse grain')
-	stack = coarse_grain(rs, 11)	
+	stack = coarse_grain(rs, 15)	
 	print('coarse grain finished')
 	print(len(stack))
 	i=0
@@ -268,7 +268,7 @@ def image_stats(im_n, im, partial_complexity, cmpl, subset_name, cg_type):
 	norm=np.einsum('ij,ij', rs, rs)
 	#intensity of image/square root of norm
 	rs=rs/np.sqrt(norm)
-	stack = coarse_grain(rs, 11)
+	stack = coarse_grain(rs, 15)
 
 	fig, axs = plt.subplots(6, 2)
 	#print("???")
