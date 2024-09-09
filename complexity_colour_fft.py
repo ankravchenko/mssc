@@ -299,7 +299,7 @@ def image_stats(im_n, im, partial_complexity, cmpl, subset_name, cg_type):
 
 subset_name='infographics'
 dataset_path="../Savoias-Dataset/Images/Visualizations/"
-ranking_path="../Savoias-Dataset/Images/global_ranking/global_ranking_vis.xlsx"
+ranking_path="../Savoias-Dataset/Ground truth/xlsx/global_ranking_vis.xlsx"
 cg_type='fft'
 
 '''
