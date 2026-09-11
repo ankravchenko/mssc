@@ -2,9 +2,14 @@
 Computes multi-scale structural complexity of an image using coarse graining implementation based on Fourier Transform.
 
 Environment is stored in mssc.yml
+
 To run analysis: mssc.py path_to_image.jpg
+
 This script will otput total complexity, list of partial complexities and a graph of partial complexities distribution.
 
+
+
+******************
 
 The repo also contains code for the SAVOIAS dataset experiment: https://journals.sagepub.com/doi/10.1177/03010066251384492
 
