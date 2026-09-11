@@ -31,10 +31,9 @@ import pickle
 import math
 from random import randint, random
 
-from tifffile import imsave
-
 
 #FIXME: add complexity entropy calculation, coarse graining depth, coarse graining methods
+#FIXME: better coarse graining stage labelling
 
 # Function converting colored picture to the gray scale
 
