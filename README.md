@@ -3,7 +3,7 @@ Computes multi-scale structural complexity of an image using coarse graining imp
 
 Environment is stored in mssc.yml
 
-To run analysis: mssc.py path_to_image.jpg
+To run analysis: mssc_full.py path_to_image.jpg
 
 This script will otput total complexity, list of partial complexities and a graph of partial complexities distribution.
 

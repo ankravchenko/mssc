@@ -31,8 +31,6 @@ import pickle
 import math
 from random import randint, random
 
-from tifffile import imsave
-
 
 
 
@@ -378,7 +376,7 @@ print(partial)
 
 #FIXME: add a function for cutting off edges
 
-x = np.arange(1, partial.size + 1)
+x = np.arange(1, len(partial) + 1)
 
 plt.clf()
 plt.figure(figsize=(7, 4))
