@@ -1,5 +1,5 @@
 
-Computes multi-scale structural complexity of an image using coarse graining implementation based on Fourier Transform.
+Computes multi-scale structural complexity of an image using coarse graining implementation based on Fourier Transform. Implementation is described in detail in https://journals.sagepub.com/doi/10.1177/03010066251384492
 
 Environment is stored in mssc.yml
 
@@ -11,7 +11,7 @@ This script will otput total complexity, list of partial complexities and a grap
 
 ******************
 
-The repo also contains code for the SAVOIAS dataset experiment: https://journals.sagepub.com/doi/10.1177/03010066251384492
+The repo also contains code for the SAVOIAS dataset experiment in old_projects/savoias
 
 The main experiment script (complexity_colour_fft.py) takes three input parameters: 
 - path to the folder contianing images, 
